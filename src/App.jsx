@@ -11,6 +11,7 @@ import Account from './pages/Account';
 import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import AppLayout from './ui/AppLayout';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient({
    defaultOptions: {
@@ -41,52 +42,28 @@ function App() {
                <Route path="*" element={<PageNotFound />} />
             </Routes>
          </BrowserRouter>
+         <Toaster
+            position="top-center"
+            gutter={12}
+            containerStyle={{ margin: '8px' }}
+            toastOptions={{
+               success: {
+                  duration: 3000,
+               },
+               error: {
+                  duration: 5000,
+               },
+               style: {
+                  fontSize: '16px',
+                  maxWidth: '500px',
+                  padding: '16px 24px',
+                  backgroundColor: 'var(--color-grey-0)',
+                  color: 'var(--color-grey-700)',
+               },
+            }}
+         />
       </QueryClientProvider>
    );
 }
 
 export default App;
-
-// import styled from 'styled-components';
-// import GlobalStyles from './styles/GlobalStyles';
-// import Button from './ui/Button';
-// import Heading from './ui/Heading';
-// import Input from './ui/Input';
-// import Row from './ui/Row';
-// import Bookings from './pages/Bookings';
-// import Cabins from './pages/Cabins';
-
-// const StyledApp = styled.main`
-//    padding: 20px;
-// `;
-
-// function App() {
-//    return (
-//       <>
-//          <GlobalStyles />
-//          <StyledApp>
-//             <Row type="vertical">
-//                <Row type="horizontal">
-//                   <Heading as="h1">The Wild Oasis</Heading>
-//                   <div>
-//                      <Heading as="h2">Check in and out</Heading>
-//                      <Button size="medium" variation="primary">
-//                         Check in
-//                      </Button>
-//                      <Button>Check out</Button>
-//                   </div>
-//                </Row>
-//                <Row type="vertical">
-//                   <Heading as="h3">Form</Heading>
-//                   <form>
-//                      <Input placeholder="Number of guests" />
-//                      <Input placeholder="Number of guests" />
-//                   </form>
-//                </Row>
-//             </Row>
-//          </StyledApp>
-//       </>
-//    );
-// }
-
-// export default App;
