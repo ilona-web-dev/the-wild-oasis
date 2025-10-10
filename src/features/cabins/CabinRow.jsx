@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { toast } from 'react-hot-toast';
 
 import CreateCabinForm from './CreateCabinForm';
 import { useDeleteCabin } from './useDeleteCabin';
@@ -52,6 +53,7 @@ function CabinRow({ cabin }) {
    } = cabin;
 
    function handleDuplicate() {
+      if (!image) return toast.error('Cabin needs an image before duplicating');
       createCabin({
          name: `Copy of ${name}`,
          maxCapacity,
