@@ -34,7 +34,7 @@ function BookingDetail() {
    const navigate = useNavigate();
 
    if (isPending) return <Spinner />;
-   if (error) return <Empty resource="booking" />;
+   if (error) return <Empty resourceName="booking" />;
    if (!booking) return null;
 
    const { status, id: bookingId } = booking;

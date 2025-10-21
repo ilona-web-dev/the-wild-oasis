@@ -15,10 +15,17 @@ export function useCheckin() {
             ...breakfast,
          }),
 
-      onSuccess: (data) => {
+      onSuccess: (data, { bookingId }) => {
          toast.success(`Booking #${data.id} successfully checked in`);
-         queryClient.invalidateQueries({ active: true });
-         navigate('/bookings');
+
+         [
+            ['bookings'],
+            ['booking', String(bookingId)],
+            ['stays'],
+            ['stays', 'today'],
+         ].forEach((key) => queryClient.invalidateQueries({ queryKey: key }));
+
+         navigate(`/bookings/${bookingId}`);
       },
 
       onError: () => toast.error('There was an error while checking in'),
