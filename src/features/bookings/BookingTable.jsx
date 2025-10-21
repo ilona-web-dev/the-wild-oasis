@@ -11,7 +11,7 @@ function BookingTable() {
    const [searchParams] = useSearchParams();
 
    if (isPending) return <Spinner />;
-   if (!bookings?.length) return <Empty resource="bookings" />;
+   if (!bookings?.length) return <Empty resourceName="bookings" />;
 
    const status = searchParams.get('status') || 'all';
 
