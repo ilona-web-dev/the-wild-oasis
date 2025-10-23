@@ -4,43 +4,13 @@ import Menus from '../../ui/Menus';
 import Empty from '../../ui/Empty';
 import { useBookings } from './useBookings';
 import Spinner from '../../ui/Spinner';
-import { useSearchParams } from 'react-router-dom';
+import Pagination from '../../ui/Pagination';
 
 function BookingTable() {
-   const { bookings, isPending } = useBookings();
-   const [searchParams] = useSearchParams();
+   const { bookings, count, isPending } = useBookings();
 
    if (isPending) return <Spinner />;
    if (!bookings?.length) return <Empty resourceName="bookings" />;
-
-   const status = searchParams.get('status') || 'all';
-
-   let filteredBookings = bookings;
-   if (status === 'checked-in')
-      filteredBookings = bookings.filter(
-         (booking) => booking.status === 'checked-in'
-      );
-   if (status === 'checked-out')
-      filteredBookings = bookings.filter(
-         (booking) => booking.status === 'checked-out'
-      );
-
-   if (status === 'unconfirmed')
-      filteredBookings = bookings.filter(
-         (booking) => booking.status === 'unconfirmed'
-      );
-
-   const sortValue = searchParams.get('sortBy') || 'startDate-desc';
-   const [field, direction] = sortValue.split('-');
-   const modifier = direction === 'asc' ? 1 : -1;
-
-   const sortedBookings = filteredBookings.slice().sort((a, b) => {
-      if (field === 'startDate')
-         return (new Date(a.startDate) - new Date(b.startDate)) * modifier;
-      if (field === 'totalPrice')
-         return (a.totalPrice - b.totalPrice) * modifier;
-      return 0;
-   });
 
    return (
       <Menus>
@@ -55,13 +25,15 @@ function BookingTable() {
             </Table.Header>
 
             <Table.Body
-               data={sortedBookings}
+               data={bookings}
                render={(booking) => (
                   <BookingRow key={booking.id} booking={booking} />
                )}
             />
 
-            <Table.Footer></Table.Footer>
+            <Table.Footer>
+               <Pagination count={count} />
+            </Table.Footer>
          </Table>
       </Menus>
    );
