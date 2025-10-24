@@ -1,17 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export function useLocalStorageState(initialState, key) {
-  const [value, setValue] = useState(function () {
-    const storedValue = localStorage.getItem(key);
-    return storedValue ? JSON.parse(storedValue) : initialState;
-  });
+   const isBrowser = typeof window !== 'undefined';
 
-  useEffect(
-    function () {
-      localStorage.setItem(key, JSON.stringify(value));
-    },
-    [value, key]
-  );
+   const [value, setValue] = useState(function () {
+      if (!isBrowser) return initialState;
+      const storedValue = localStorage.getItem(key);
+      return storedValue ? JSON.parse(storedValue) : initialState;
+   });
 
-  return [value, setValue];
+   useEffect(
+      function () {
+         if (!isBrowser) return;
+         localStorage.setItem(key, JSON.stringify(value));
+      },
+      [value, key, isBrowser]
+   );
+
+   return [value, setValue];
 }
