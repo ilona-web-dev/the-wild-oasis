@@ -1,17 +1,17 @@
-import { signup as signupApi } from '../../services/apiAuth';
 import { useMutation } from '@tanstack/react-query';
+import { signup as signupApi } from '../../services/apiAuth';
 import { toast } from 'react-hot-toast';
 
 export function useSignup() {
-   const { mutate: signup, isPending: isCreating } = useMutation({
+   const { mutate: signup, isPending } = useMutation({
       mutationFn: signupApi,
       onSuccess: () => {
          toast.success(
-            "Account successfully created! Please verufy the new account from the user's email address."
+            "Account successfully created! Please verify the new account from the user's email address."
          );
       },
-      onError: (err) => toast.error(err.message),
+      onError: (error) => toast.error(error.message),
    });
 
-   return { signup, isCreating };
+   return { signup, isPending };
 }
