@@ -23,7 +23,7 @@ function UserAvatar() {
    const { user } = useUser();
    if (!user) return null;
    const fullName = user.user_metadata?.fullName ?? user.email;
-   const avatar = user.user_metadata?.avatar ?? 'default-user.jpg';
+   const avatar = user.user_metadata?.avatar || 'default-user.jpg';
    return (
       <StyledUserAvatar>
          <Avatar src={avatar} alt={`Avatar of ${fullName}`} />
