@@ -35,7 +35,7 @@ function BookingDetail() {
 
    if (isPending) return <Spinner />;
    if (error) return <Empty resourceName="booking" />;
-   if (!booking) return null;
+   if (!booking) return <Empty resourceName="booking" />;
 
    const { status, id: bookingId } = booking;
 
