@@ -4,6 +4,10 @@ import { useRecentStays } from './useRecentStays';
 import { useCabins } from '../cabins/useCabins';
 import Spinner from '../../ui/Spinner';
 import Stats from './Stats';
+import { SalesChart } from './SalesChart';
+import { DurationChart } from './DurationChart';
+import { TodayActivity } from '../check-in-out/TodayActivity';
+import Empty from '../../ui/Empty';
 
 const StyledDashboardLayout = styled.div`
    display: grid;
@@ -12,23 +16,24 @@ const StyledDashboardLayout = styled.div`
    gap: 2.4rem;
 `;
 
-/*
-We need to distinguish between two types of data here:
-1) BOOKINGS: the actual sales. For example, in the last 30 days, the hotel might have sold 10 bookings online, but these guests might only arrive and check in in the far future (or not, as booking also happen on-site)
-2) STAYS: the actual check-in of guests arriving for their bookings. We can identify stays by their startDate, together with a status of either 'checked-in' (for current stays) or 'checked-out' (for past stays)
-*/
-
 function DashboardLayout() {
-   const { bookings, isPending: isPending1 } = useRecentBookings();
+   const {
+      bookings,
+      isPending: isPending1,
+      error: bookingError,
+   } = useRecentBookings();
 
    const {
-      stays,
       isPending: isPending2,
       confirmedStays,
       numDays,
+      error: staysError,
    } = useRecentStays();
 
    const { cabins, isPending: isPending3 } = useCabins();
+
+   if (bookingError || staysError)
+      return <Empty resourceName="dashboard data" />;
 
    if (isPending1 || isPending2 || isPending3) return <Spinner />;
 
@@ -40,9 +45,9 @@ function DashboardLayout() {
             numDays={numDays}
             cabinCount={cabins.length}
          />
-         <div>Today's activity</div>
-         <div>Chart stay duration</div>
-         <div>Chart sales</div>
+         <TodayActivity />
+         <DurationChart confirmedStays={confirmedStays} />
+         <SalesChart bookings={bookings} numDays={numDays} />
       </StyledDashboardLayout>
    );
 }
