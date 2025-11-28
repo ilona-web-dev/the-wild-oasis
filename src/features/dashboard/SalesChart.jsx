@@ -34,7 +34,8 @@ export function SalesChart({ bookings, numDays }) {
 
    const data = allDates.map((date) => {
       const bookingsForDay = bookings.filter((booking) =>
-         isSameDay(date, new Date(booking.created_at))
+         // isSameDay(date, new Date(booking.created_at))
+         isSameDay(date, new Date(booking.startDate))
       );
 
       const totalSales = bookingsForDay.reduce(
